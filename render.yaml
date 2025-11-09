@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: trading-platform
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PORT
+        fromService:
+          type: web
+          name: trading-platform
+          property: port
+      - key: DATABASE_URL
+        value: ./trading.db
+      - key: JWT_SECRET
+        generateValue: true
+
